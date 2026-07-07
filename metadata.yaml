@@ -3,5 +3,5 @@
 # versions: una entrada por versión publicada; `sha` es el commit de Git que contiene esa versión.
 homepage: https://github.com/abanico-networks/bandama-gtm-template
 versions:
-  - sha: 95603c804c2e8be3899669707ef6103c5cb4a61f
+  - sha: 2460972e08f9e7736aeba6c8e9e73af30021cad8
     changeNotes: Versión inicial. Establece el estado de consentimiento por defecto (Consent Mode v2), aplica la decisión previa y carga el script de consentimiento de Bandama.
