@@ -1,6 +1,6 @@
 ___TERMS_OF_SERVICE___
 
-By creating and submitting this Template you agree to the Google Tag Manager Community Template Gallery Developer Terms of Service, which can be found at https://developers.google.com/tag-manager/gallery-tos (as modified or supplemented from time to time), which are hereby incorporated by reference.
+By creating and submitting a template you agree to the Google Tag Manager Community Template Gallery Developer Terms of Service, which can be found at https://developers.google.com/tag-manager/gallery-tos (as modified or supplemented from time to time), which are hereby incorporated by reference.
 
 
 ___INFO___
