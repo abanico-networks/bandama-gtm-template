@@ -1,0 +1,7 @@
+# Metadatos para la Community Template Gallery de Google Tag Manager.
+# homepage: URL pública del repo en GitHub (ajústala a la real).
+# versions: una entrada por versión publicada; `sha` es el commit de Git que contiene esa versión.
+homepage: https://github.com/abaniconetworks/bandama-gtm-template
+versions:
+  - sha: REEMPLAZAR_POR_SHA_DEL_COMMIT
+    changeNotes: Versión inicial. Establece el estado de consentimiento por defecto (Consent Mode v2), aplica la decisión previa y carga el script de consentimiento de Bandama.

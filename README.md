@@ -38,4 +38,4 @@ La plantilla solicita únicamente los permisos necesarios para su función:
 - Estándar: Google Consent Mode v2.
 
 ## Licencia
-Uso interno del cliente. Contacta con Bandama para condiciones de distribución.
+[Apache License 2.0](LICENSE).
