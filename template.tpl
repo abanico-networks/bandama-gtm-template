@@ -7,7 +7,7 @@ ___INFO___
   "securityGroups": [],
   "displayName": "Bandama CMP",
   "categories": ["UTILITY", "ANALYTICS", "ADVERTISING"],
-  "description": "Consent Management Platform de Bandama (Abanico Networks). Fija el estado de consentimiento por defecto (Consent Mode v2), aplica la decisión previa del visitante (cookie bandama_gtm) y carga el widget de consentimiento (consent.js). Colócala en el trigger 'Consent Initialization - All Pages'.",
+  "description": "Plataforma de gestión de consentimiento de Bandama. Establece el estado de consentimiento por defecto (Google Consent Mode v2), aplica la decisión previa de la persona usuaria y carga el banner de consentimiento. Añádela a una etiqueta con el activador «Inicialización de consentimiento - Todas las páginas».",
   "containerContexts": ["WEB"]
 }
 
@@ -18,21 +18,21 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "TEXT",
     "name": "consentJsUrl",
-    "displayName": "URL de consent.js",
+    "displayName": "URL del script de consentimiento",
     "simpleValueType": true,
     "defaultValue": "https://cdn.bandama.es/consent.js",
     "valueValidators": [
       { "type": "NON_EMPTY" }
     ],
-    "help": "URL del núcleo del widget de Bandama. Debe coincidir con la permitida en 'inject_script'."
+    "help": "URL del script de consentimiento de Bandama. Debe coincidir con la URL autorizada en los permisos de inyección de scripts."
   },
   {
     "type": "TEXT",
     "name": "waitForUpdate",
-    "displayName": "wait_for_update (ms)",
+    "displayName": "Espera de actualización (ms)",
     "simpleValueType": true,
     "defaultValue": 500,
-    "help": "Milisegundos que Consent Mode espera una actualización antes de asumir los defaults."
+    "help": "Milisegundos que Consent Mode espera una actualización del consentimiento antes de asumir los valores por defecto."
   }
 ]
 
@@ -47,8 +47,8 @@ const makeInteger = require('makeInteger');
 
 const CONSENT_COOKIE = 'bandama_gtm';
 
-// 1) Estado por defecto (Consent Mode v2): publicidad y analítica denegadas hasta consentir;
-//    seguridad y funcionalidad concedidas. Debe ejecutarse en 'Consent Initialization'.
+// Estado de consentimiento por defecto: publicidad y analítica denegadas hasta que la persona
+// usuaria decida; seguridad y funcionalidad concedidas.
 const waitForUpdate = data.waitForUpdate ? makeInteger(data.waitForUpdate) : 500;
 setDefaultConsentState({
   ad_storage: 'denied',
@@ -61,8 +61,7 @@ setDefaultConsentState({
   wait_for_update: waitForUpdate
 });
 
-// 2) Si el visitante ya decidió, el widget dejó su decisión en la cookie bandama_gtm.
-//    La aplicamos ya para no esperar a que cargue consent.js.
+// Aplica la decisión previa de la persona usuaria, si existe.
 const values = getCookieValues(CONSENT_COOKIE);
 if (values && values.length > 0 && values[0]) {
   const update = parseConsent(values[0]);
@@ -71,12 +70,10 @@ if (values && values.length > 0 && values[0]) {
   }
 }
 
-// 3) Cargamos el núcleo del widget (async). Pinta el banner, escribe bandama_gtm y hace
-//    gtag('consent','update') (→ dataLayer) al cambiar el consentimiento en este mismo pageview.
+// Carga el script de consentimiento.
 injectScript(data.consentJsUrl, data.gtmOnSuccess, data.gtmOnFailure, data.consentJsUrl);
 
-// Convierte "analytics_storage:1|ad_storage:0|..." → { analytics_storage:'granted', ad_storage:'denied' }.
-// Contrato config-agnóstico: la cookie trae señales de Consent Mode literales, no ids de categoría.
+// Convierte "analytics_storage:1|ad_storage:0|..." en { analytics_storage: 'granted', ... }.
 function parseConsent(raw) {
   const out = {};
   const parts = raw.split('|');
@@ -269,5 +266,4 @@ scenarios: []
 
 ___NOTES___
 
-Plantilla CMP de Bandama (Abanico Networks). Contrato con el widget: cookie `bandama_gtm` con
-señales de Consent Mode literales separadas por `|`, cada una `senal:1|0` (1=granted, 0=denied).
+Plantilla de gestión de consentimiento de Bandama para Google Tag Manager.
